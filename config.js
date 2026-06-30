@@ -1,0 +1,1 @@
+window.MIRAI_MEMO_FORMSPREE_ENDPOINT = "";
