@@ -103,6 +103,23 @@ git push -u origin main
 5. `Branch` を `main`、フォルダを `/root` にして保存します。
 6. 数分後に `https://<your-account>.github.io/mirai-memo-landing-page/` で公開されます。
 
+## Google検索に出すための設定
+
+このLPには検索エンジン向けに以下を入れています。
+
+- `robots.txt`
+- `sitemap.xml`
+- canonical URL
+- OGP / Twitter Card
+- `meta name="robots" content="index,follow"`
+
+Googleに早く認識させる場合は、Google Search Consoleで以下を行ってください。
+
+1. `https://haru861017.github.io/mirai-memo-landing-page/` をプロパティとして追加
+2. 所有権確認を行う
+3. サイトマップに `https://haru861017.github.io/mirai-memo-landing-page/sitemap.xml` を送信
+4. URL検査からトップページのインデックス登録をリクエスト
+
 ### Netlify Drop
 
 1. `landing-page/` フォルダ、または作成済みzipをNetlify Dropへアップロードします。

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://haru861017.github.io/mirai-memo-landing-page/sitemap.xml
