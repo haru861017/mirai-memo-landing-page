@@ -391,6 +391,26 @@
       <p>必要なことを、未来の自分へつなぐ。</p>
     </footer>
 
+    <div
+      class="success-dialog"
+      id="waitlist-success-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="waitlist-success-title"
+      aria-describedby="waitlist-success-description"
+      hidden
+    >
+      <div class="success-dialog__backdrop" data-dialog-close></div>
+      <div class="success-dialog__panel" role="document">
+        <span class="success-dialog__icon" aria-hidden="true">✦</span>
+        <h2 id="waitlist-success-title">先行登録が完了しました</h2>
+        <p id="waitlist-success-description">
+          登録ありがとうございます。未来メモのリリース情報をお届けします。
+        </p>
+        <button class="success-dialog__button" type="button" data-dialog-close>閉じる</button>
+      </div>
+    </div>
+
     <script src="./config.js" defer></script>
     <script src="./script.js" defer></script>
   </body>

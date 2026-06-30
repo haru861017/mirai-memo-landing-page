@@ -1,9 +1,9 @@
 const WAITLIST_API_ENDPOINT = "/api/waitlist";
 const WAITLIST_STORAGE_KEY = "mirai-memo-waitlist";
-const SUCCESS_MESSAGE = "登録ありがとうございます。未来メモのリリース情報をお届けします。";
 const FORMSPREE_ENDPOINT_PATTERN = /^https:\/\/formspree\.io\/f\/[a-z0-9]+$/i;
 
 const submittingForms = new WeakSet();
+let previousDialogFocus = null;
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -111,6 +111,45 @@ function setSubmitting(form, isSubmitting) {
   button.textContent = isSubmitting ? "送信中..." : button.dataset.defaultText;
 }
 
+function openSuccessDialog() {
+  const dialog = document.getElementById("waitlist-success-dialog");
+  if (!dialog) return;
+
+  previousDialogFocus = document.activeElement;
+  dialog.hidden = false;
+  document.body.classList.add("dialog-open");
+
+  const closeButton = dialog.querySelector("button[data-dialog-close]");
+  window.setTimeout(() => closeButton?.focus(), 0);
+}
+
+function closeSuccessDialog() {
+  const dialog = document.getElementById("waitlist-success-dialog");
+  if (!dialog || dialog.hidden) return;
+
+  dialog.hidden = true;
+  document.body.classList.remove("dialog-open");
+
+  if (previousDialogFocus instanceof HTMLElement) {
+    previousDialogFocus.focus();
+  }
+}
+
+function setupSuccessDialog() {
+  const dialog = document.getElementById("waitlist-success-dialog");
+  if (!dialog) return;
+
+  dialog.querySelectorAll("[data-dialog-close]").forEach((button) => {
+    button.addEventListener("click", closeSuccessDialog);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeSuccessDialog();
+    }
+  });
+}
+
 function setupFormspreeActions() {
   const endpoint = getFormspreeEndpoint();
   if (!FORMSPREE_ENDPOINT_PATTERN.test(endpoint)) return;
@@ -158,11 +197,16 @@ function setupWaitlistForms() {
       setSubmitting(form, true);
       setMessage(form, "登録処理中です。", "");
 
-      await submitWaitlist(email, source);
-
-      setMessage(form, SUCCESS_MESSAGE, "success");
-      setSubmitting(form, false);
-      submittingForms.delete(form);
+      try {
+        await submitWaitlist(email, source);
+        input.value = "";
+        input.classList.remove("is-invalid");
+        setMessage(form, "", "");
+        openSuccessDialog();
+      } finally {
+        setSubmitting(form, false);
+        submittingForms.delete(form);
+      }
     });
   });
 }
@@ -180,5 +224,6 @@ function setupFocusButtons() {
 }
 
 setupFormspreeActions();
+setupSuccessDialog();
 setupWaitlistForms();
 setupFocusButtons();
