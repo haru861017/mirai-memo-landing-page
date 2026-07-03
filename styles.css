@@ -178,6 +178,20 @@ h1 span {
   display: block;
 }
 
+.motion-title span {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: titleRise 780ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.motion-title span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.motion-title span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
 h2 {
   margin-bottom: 18px;
   font-size: 2.32rem;
@@ -214,6 +228,8 @@ h3 {
 
 .primary-button,
 .waitlist-form button {
+  position: relative;
+  overflow: hidden;
   min-height: 52px;
   border: 0;
   border-radius: 999px;
@@ -224,8 +240,20 @@ h3 {
   transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
 }
 
+.primary-button::after,
+.waitlist-form button::after {
+  position: absolute;
+  inset: -40% -70%;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 255, 255, 0.56), transparent 62%);
+  content: "";
+  transform: translateX(-70%);
+  animation: buttonShine 4.2s ease-in-out infinite;
+}
+
 .primary-button {
   padding: 0 24px;
+  animation: ctaBreathe 3.8s ease-in-out infinite;
 }
 
 .primary-button:hover,
@@ -382,14 +410,23 @@ h3 {
     linear-gradient(145deg, rgba(255, 255, 255, 0.14), transparent 26%),
     linear-gradient(145deg, #111827, #48515e 48%, #0b1018 64%);
   box-shadow: 0 30px 80px rgba(28, 56, 98, 0.25);
+  transform-style: preserve-3d;
 }
 
 .phone-frame {
   width: min(390px, 88vw);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .hero-phone {
   animation: deviceFloat 7.5s ease-in-out infinite;
+}
+
+.phone-frame.is-pointer-active,
+.iphone-shell.is-pointer-active {
+  animation: none;
+  transform: perspective(980px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-10px) scale(1.012);
+  box-shadow: 0 38px 90px rgba(28, 56, 98, 0.3);
 }
 
 .phone-frame::before,
@@ -668,11 +705,16 @@ h3 {
   box-shadow: 0 28px 70px rgba(28, 56, 98, 0.24);
 }
 
+.app-shot:hover .iphone-shell.is-pointer-active {
+  transform: perspective(980px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-10px) scale(1.012);
+}
+
 .iphone-shell {
   width: 100%;
   padding: 18px 9px 10px;
   border-radius: 42px;
   box-shadow: 0 22px 56px rgba(28, 56, 98, 0.18);
+  transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
 .iphone-shell img {
@@ -835,6 +877,17 @@ h3 {
   margin: 0;
 }
 
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 @keyframes futureFlow {
   from {
     background-position: 0 0, 0 0;
@@ -842,6 +895,37 @@ h3 {
 
   to {
     background-position: 180px 0, 0 0;
+  }
+}
+
+@keyframes titleRise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ctaBreathe {
+  0%,
+  100% {
+    box-shadow: 0 16px 30px rgba(45, 126, 219, 0.24);
+  }
+
+  50% {
+    box-shadow: 0 22px 44px rgba(34, 198, 215, 0.34);
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes buttonShine {
+  0%,
+  52% {
+    transform: translateX(-70%);
+  }
+
+  78%,
+  100% {
+    transform: translateX(70%);
   }
 }
 
@@ -1183,6 +1267,10 @@ h3 {
 
   .hero-phone,
   .floating-card {
+    animation: none;
+  }
+
+  .primary-button {
     animation: none;
   }
 

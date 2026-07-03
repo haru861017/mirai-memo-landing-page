@@ -223,7 +223,56 @@ function setupFocusButtons() {
   });
 }
 
+function setupPointerReactiveDevices() {
+  const devices = document.querySelectorAll(".phone-frame, .iphone-shell");
+
+  devices.forEach((device) => {
+    device.addEventListener("pointermove", (event) => {
+      const rect = device.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      device.classList.add("is-pointer-active");
+      device.style.setProperty("--tilt-x", `${(-y * 8).toFixed(2)}deg`);
+      device.style.setProperty("--tilt-y", `${(x * 8).toFixed(2)}deg`);
+    });
+
+    device.addEventListener("pointerleave", () => {
+      device.classList.remove("is-pointer-active");
+      device.style.removeProperty("--tilt-x");
+      device.style.removeProperty("--tilt-y");
+    });
+  });
+}
+
+function setupScrollReveal() {
+  const targets = document.querySelectorAll(
+    ".section-copy, .soft-card, .flow-grid article, .feature-card, .plan-card, .app-shot, .notification-copy, .notification-phone, .example-row, .final-copy, .waitlist-panel",
+  );
+
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((target) => target.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" });
+
+  targets.forEach((target, index) => {
+    target.classList.add("reveal-on-scroll");
+    target.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
+    observer.observe(target);
+  });
+}
+
 setupFormspreeActions();
 setupSuccessDialog();
 setupWaitlistForms();
 setupFocusButtons();
+setupPointerReactiveDevices();
+setupScrollReveal();
