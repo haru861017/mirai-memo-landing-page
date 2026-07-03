@@ -338,6 +338,38 @@ h3 {
   place-items: center;
 }
 
+.hero-visual::before {
+  position: absolute;
+  inset: 34px -22px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 34px;
+  background:
+    repeating-linear-gradient(
+      122deg,
+      transparent 0 34px,
+      rgba(45, 126, 219, 0.08) 34px 35px,
+      transparent 35px 74px
+    ),
+    linear-gradient(145deg, rgba(34, 198, 215, 0.08), transparent 48%, rgba(138, 112, 214, 0.1));
+  opacity: 0.72;
+  transform: skewY(-5deg);
+  animation: futureFlow 14s linear infinite;
+}
+
+.hero-visual::after {
+  position: absolute;
+  right: 24px;
+  bottom: 76px;
+  z-index: 0;
+  width: 62%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(45, 126, 219, 0.52), rgba(34, 198, 215, 0.12), transparent);
+  content: "";
+  animation: futureBeam 5.5s ease-in-out infinite;
+}
+
 .phone-frame,
 .iphone-shell {
   position: relative;
@@ -354,6 +386,10 @@ h3 {
 
 .phone-frame {
   width: min(390px, 88vw);
+}
+
+.hero-phone {
+  animation: deviceFloat 7.5s ease-in-out infinite;
 }
 
 .phone-frame::before,
@@ -435,6 +471,14 @@ h3 {
   backdrop-filter: blur(14px);
 }
 
+.floating-card {
+  animation: cardFloat 6.4s ease-in-out infinite;
+}
+
+.card-line {
+  animation-delay: -2.1s;
+}
+
 .floating-card span {
   display: block;
   margin-bottom: 4px;
@@ -457,6 +501,8 @@ h3 {
 }
 
 .time-preview b {
+  position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 52px 1fr;
   align-items: center;
@@ -467,6 +513,23 @@ h3 {
   font-size: 0.82rem;
   line-height: 1;
   background: rgba(45, 126, 219, 0.1);
+}
+
+.time-preview b::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.62), transparent);
+  content: "";
+  transform: translateX(-120%);
+  animation: timeScan 4.2s ease-in-out infinite;
+}
+
+.time-preview b:nth-child(2)::after {
+  animation-delay: 0.45s;
+}
+
+.time-preview b:nth-child(3)::after {
+  animation-delay: 0.9s;
 }
 
 .time-preview time {
@@ -588,11 +651,21 @@ h3 {
   grid-template-columns: 1.18fr repeat(3, 0.82fr);
   gap: 18px;
   align-items: start;
+  perspective: 1200px;
 }
 
 .app-shot {
   margin: 0;
   padding: 0;
+}
+
+.app-shot .iphone-shell {
+  transition: transform 240ms ease, box-shadow 240ms ease;
+}
+
+.app-shot:hover .iphone-shell {
+  transform: translateY(-8px) rotateX(2deg);
+  box-shadow: 0 28px 70px rgba(28, 56, 98, 0.24);
 }
 
 .iphone-shell {
@@ -762,6 +835,63 @@ h3 {
   margin: 0;
 }
 
+@keyframes futureFlow {
+  from {
+    background-position: 0 0, 0 0;
+  }
+
+  to {
+    background-position: 180px 0, 0 0;
+  }
+}
+
+@keyframes futureBeam {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: translateX(-18px);
+  }
+
+  50% {
+    opacity: 0.88;
+    transform: translateX(18px);
+  }
+}
+
+@keyframes deviceFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes timeScan {
+  0%,
+  48% {
+    transform: translateX(-120%);
+  }
+
+  72%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
 .success-dialog[hidden] {
   display: none;
 }
@@ -919,6 +1049,17 @@ h3 {
     min-height: 430px;
   }
 
+  .hero-visual::before {
+    inset: 18px -14px;
+    opacity: 0.52;
+  }
+
+  .hero-visual::after {
+    right: 0;
+    bottom: 56px;
+    width: 82%;
+  }
+
   .floating-card {
     width: 174px;
     padding: 11px 12px;
@@ -1040,6 +1181,11 @@ h3 {
     width: min(196px, 58vw);
   }
 
+  .hero-phone,
+  .floating-card {
+    animation: none;
+  }
+
   .success-dialog {
     padding: 18px;
   }
@@ -1058,6 +1204,8 @@ h3 {
   *,
   *::before,
   *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
   }
