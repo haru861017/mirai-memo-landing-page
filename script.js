@@ -224,7 +224,7 @@ function setupFocusButtons() {
 }
 
 function setupPointerReactiveDevices() {
-  const devices = document.querySelectorAll(".phone-frame, .iphone-shell");
+  const devices = document.querySelectorAll(".phone-frame, .iphone-shell, .store-poster");
 
   devices.forEach((device) => {
     device.addEventListener("pointermove", (event) => {
@@ -247,7 +247,7 @@ function setupPointerReactiveDevices() {
 
 function setupScrollReveal() {
   const targets = document.querySelectorAll(
-    ".section-copy, .soft-card, .flow-grid article, .feature-card, .plan-card, .app-shot, .notification-copy, .notification-phone, .example-row, .final-copy, .waitlist-panel",
+    ".section-copy, .soft-card, .flow-grid article, .feature-card, .plan-card, .app-shot, .notification-copy, .notification-phone, .example-row, .legal-card, .final-copy, .waitlist-panel",
   );
 
   if (!("IntersectionObserver" in window)) {
